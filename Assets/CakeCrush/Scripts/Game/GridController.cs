@@ -54,7 +54,7 @@ public class GridController : MonoBehaviour
         }
     }
 
-    private IEnumerator CreateGrid()
+    public IEnumerator CreateGrid()
     {
         for (var i = 0; i < width; i++)
         {
@@ -99,12 +99,12 @@ public class GridController : MonoBehaviour
             var downDot = j - 1 >= 0 && this.allDots[i, j - 1] ? this.allDots[i, j - 1].tag : string.Empty;
             if (originDot == leftDot || originDot == downDot)
                 continue;
-
             var pos = new Vector2(i, j + k);
-            var objDot = Instantiate(dots[dotToUse], pos, Quaternion.identity);
-            objDot.SetActive(true);
-            objDot.transform.SetParent(transform);
-            objDot.name = "(" + i + "," + j + ")";
+            var objDot = ObjectPoolCakes.Instance.GetCakes(originDot, pos);
+            objDot.transform.rotation = Quaternion.identity;
+            //objDot.SetActive(true);
+            //objDot.transform.SetParent(transform);
+            //objDot.name = "(" + i + "," + j + ")";
             allDots[i, j] = objDot;
             objDot.GetComponent<DotInteraction>().Column = i;
             objDot.GetComponent<DotInteraction>().Row = j;

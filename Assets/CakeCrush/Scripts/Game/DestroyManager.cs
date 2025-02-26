@@ -42,7 +42,8 @@ public class DestroyManager : MonoBehaviour
             //this.Effects(column, row, nameObject);
             ObjectPoolEffects.Instance.HandleDestroyEffects(obj.tag, obj.transform.position);
             GridController.Instance.AllDots[column, row].GetComponent<Dot>().PlusScoreObj();
-            Destroy(GridController.Instance.AllDots[column, row]);
+            obj.GetComponent<DotInteraction>().IsMatched = false;
+            ObjectPoolCakes.Instance.ReturnCakes(obj, obj.tag);
             GridController.Instance.AllDots[column, row] = null;
         }
     }
@@ -80,14 +81,12 @@ public class DestroyManager : MonoBehaviour
                 }
                 else if (count > 0)
                 {
-
                     GridController.Instance.AllDots[i, j].GetComponent<DotInteraction>().Row -= count;
                     GridController.Instance.AllDots[i, j] = null;
                 }
             }
             count = 0;
         }
-
         StartCoroutine(this.DestroyAgain());
     }
 
@@ -102,13 +101,14 @@ public class DestroyManager : MonoBehaviour
                 {
                     //GridController.Instance.HandleSpawnDotObj(i, j, 1);
                     var pos = new Vector2(i, j + 1.5f);
-                    var objDot = Instantiate(GridController.Instance.Dots[GridController.Instance.DotToUse()], pos, Quaternion.identity);
-                    objDot.name = "(" + i + "," + j + ")";
-                    objDot.SetActive(true);
+                    var objDot = ObjectPoolCakes.Instance.GetCakes(GridController.Instance.Dots[GridController.Instance.DotToUse()].tag, pos);
+                    //objDot.name = "(" + i + "," + j + ")";
+                    //objDot.SetActive(true);
+                    objDot.transform.rotation = Quaternion.identity;
                     objDot.GetComponent<DotInteraction>().Column = i;
                     objDot.GetComponent<DotInteraction>().Row = j;
                     GridController.Instance.AllDots[i, j] = objDot;
-                    objDot.transform.parent = transform;
+                    //objDot.transform.parent = transform;
                 }
             }
         }
@@ -176,37 +176,4 @@ public class DestroyManager : MonoBehaviour
         }
     }
 
-    #region Effects
-    private int GetValueEffects(string nameTag)
-    {
-        var index = 0;
-        switch (nameTag)
-        {
-            case "Cake1":
-                index = 0;
-                break;
-            case "Cake2":
-                index = 1;
-                break;
-            case "Cake3":
-                index = 2;
-                break;
-            case "Cake4":
-                index = 3;
-                break;
-            case "Cake5":
-                index = 4;
-                break;
-        }
-        return index;
-    }
-
-    private void Effects(int i, int j, GameObject nameTag)
-    {
-        var posSpawnEffects = new Vector2(i, j);
-        var obj = Instantiate(effects[GetValueEffects(nameTag.tag)], posSpawnEffects, Quaternion.identity);
-        obj.SetActive(true);
-        Destroy(obj, 2f);
-    }
-    #endregion
 }
