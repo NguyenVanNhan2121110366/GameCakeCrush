@@ -40,7 +40,7 @@ public class UIHome : MonoBehaviour
     {
         fillSetting.SetActive(false);
         uISetting.gameObject.SetActive(false);
-        sliderMusic.onValueChanged.AddListener(AudioManager.Instance.VolumeBgrMusic);
+        sliderMusic.onValueChanged.AddListener(MusicBgr.Instance.VolumeBgrMusic);
         sliderMusic.value = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
     }
 

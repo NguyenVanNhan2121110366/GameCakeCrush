@@ -76,7 +76,6 @@ public class CountDownTimeManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log("GameOver");
     }
 
     public IEnumerator AnimatePlusSeconds(int plusSeconds)

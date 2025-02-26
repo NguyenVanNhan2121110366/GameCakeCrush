@@ -31,7 +31,7 @@ public class UISettingManager : ButtonUIManager
     // Start is called before the first frame update
     void Start()
     {
-        sliderMusic.onValueChanged.AddListener(AudioManager.Instance.VolumeBgrMusic);
+        sliderMusic.onValueChanged.AddListener(MusicBgr.Instance.VolumeBgrMusic);
         sliderSound.onValueChanged.AddListener(AudioManager.Instance.VolumeSound);
         sliderMusic.value = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
         sliderSound.value = PlayerPrefs.GetFloat("SoundVolume", 0.5f);
