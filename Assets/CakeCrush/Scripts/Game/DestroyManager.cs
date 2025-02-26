@@ -38,12 +38,12 @@ public class DestroyManager : MonoBehaviour
     {
         if (GridController.Instance.AllDots[column, row].GetComponent<DotInteraction>().IsMatched)
         {
-            var nameObject = GridController.Instance.AllDots[column, row];
-            this.Effects(column, row, nameObject);
+            var obj = GridController.Instance.AllDots[column, row];
+            //this.Effects(column, row, nameObject);
+            ObjectPoolEffects.Instance.HandleDestroyEffects(obj.tag, obj.transform.position);
             GridController.Instance.AllDots[column, row].GetComponent<Dot>().PlusScoreObj();
             Destroy(GridController.Instance.AllDots[column, row]);
             GridController.Instance.AllDots[column, row] = null;
-            Debug.Log("Destroy Matched At");
         }
     }
 
@@ -60,7 +60,6 @@ public class DestroyManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Destroy Matched");
         AudioManager.Instance.AudioSrc.PlayOneShot(AudioManager.Instance.AudioClips[0]);
 
         StartCoroutine(this.Falling());
@@ -167,10 +166,13 @@ public class DestroyManager : MonoBehaviour
                 }
             }
         }
-        if (!dot.IsMatched)
+        if (dot)
         {
-            yield return new WaitForSeconds(0.5f);
-            GridController.Instance.RandomDot();
+            if (!dot.IsMatched)
+            {
+                yield return new WaitForSeconds(0.5f);
+                GridController.Instance.RandomDot();
+            }
         }
     }
 
