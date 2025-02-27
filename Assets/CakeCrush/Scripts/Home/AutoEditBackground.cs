@@ -13,12 +13,6 @@ public class AutoEditBackground : MonoBehaviour
         this.CheckAndEdit();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void CheckAndEdit()
     {
         var heightScreen = Camera.main.orthographicSize * 2;

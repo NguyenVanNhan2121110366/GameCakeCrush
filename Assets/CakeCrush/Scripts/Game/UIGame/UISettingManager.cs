@@ -47,16 +47,12 @@ public class UISettingManager : ButtonUIManager
     protected override void OnClickResume()
     {
         base.OnClickResume();
-        ButtonSettingController.Instance.AnimTurnOffUI();
-        GameStateController.Instance.CurrentGameState = GameState.Swipe;
-        StartCoroutine(AbilityManager.Instance.UpdateCountTimeCoolDown());
+        ObServerManager.Notifine("ClickResume");
     }
 
     protected override void OnclickRestart()
     {
-        ButtonSettingController.Instance.AnimTurnOffUI();
-        GameOverManager.Instance.ResetGame();
-        StartCoroutine(AbilityManager.Instance.UpdateCountTimeCoolDown());
+        ObServerManager.Notifine("OnclickRestart");
     }
 
 

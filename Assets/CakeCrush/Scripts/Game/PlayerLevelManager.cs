@@ -16,24 +16,29 @@ public class PlayerLevelManager : MonoBehaviour
     {
         if (instance == null) instance = this; else Destroy(gameObject);
         if (txtLevel == null) txtLevel = GameObject.Find("txtLevelPlayer").GetComponent<TextMeshProUGUI>();
-        level = PlayerPrefs.GetInt("CurrentLevel", 1);
+        this.GetValueLevel();
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        ObServerManager.AddObServer("UpdateScoreAfterRestart", GetValueLevel);
         this.TextLevel();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void GetValueLevel()
     {
-
+        level = PlayerPrefs.GetInt("CurrentLevel", 1);
     }
 
     private void TextLevel()
     {
         txtLevel.text = "Level " + level;
+    }
+
+    void OnDestroy()
+    {
+        ObServerManager.RemoveObServer("UpdateScoreAfterRestart", GetValueLevel);
     }
 
 

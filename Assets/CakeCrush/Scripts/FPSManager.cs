@@ -9,10 +9,4 @@ public class FPSManager : MonoBehaviour
     {
         Application.targetFrameRate = 90;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

@@ -7,7 +7,7 @@ public class GameStateController : MonoBehaviour
     private static GameStateController instance;
     [SerializeField] private GameState currentGameState;
     public GameState CurrentGameState { get => currentGameState; set => currentGameState = value; }
-    public static GameStateController Instance { get => instance; set => instance = null; }
+    public static GameStateController Instance { get => instance; set => instance = value; }
 
     private void Awake()
     {
@@ -17,6 +17,7 @@ public class GameStateController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ObServerManager.AddObServer("ClickResume", GameStateSwipe);
         currentGameState = GameState.None;
     }
 
@@ -27,6 +28,14 @@ public class GameStateController : MonoBehaviour
         {
             currentGameState = GameState.Swipe;
         }
+    }
+    public void GameStateSwipe()
+    {
+        currentGameState = GameState.Swipe;
+    }
+    void OnDestroy()
+    {
+        ObServerManager.RemoveObServer("ClickResume", GameStateSwipe);
     }
 }
 

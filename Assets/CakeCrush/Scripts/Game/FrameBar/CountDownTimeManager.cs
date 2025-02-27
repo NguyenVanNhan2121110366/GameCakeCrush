@@ -28,8 +28,11 @@ public class CountDownTimeManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ObServerManager.AddObServer("UpdateScoreAfterRestart", UpdateSeconds);
+        ObServerManager.AddObServer("UpdateUIAfterRestart", UpdateTextSeconds);
+        ObServerManager.AddObServer("UpdateExpAndSeconds", UpdateScoreSeconds);
+        this.UpdateSeconds();
         this.UpdateTextSeconds();
-        timeDelay = PlayerPrefs.GetFloat("TimeDelay", 1.5f);
         this.UpdateTimeDelayByLevel(PlayerLevelManager.Instance.Level);
     }
 
@@ -39,13 +42,16 @@ public class CountDownTimeManager : MonoBehaviour
         this.UpdateCountDownTime();
     }
 
-    public void UpdateTextSeconds()
+    private void UpdateSeconds()
     {
         maxSeconds = PlayerPrefs.GetInt("MaxSeconds", 10);
         seconds = PlayerPrefs.GetInt("CurrentSeconds", maxSeconds);
+        timeDelay = PlayerPrefs.GetFloat("TimeDelay", 1.5f);
+    }
 
+    public void UpdateTextSeconds()
+    {
         txtSeconds.text = seconds.ToString();
-        Debug.Log("UpdateTextSeconds");
     }
 
     public IEnumerator MinusSecond()
@@ -78,7 +84,7 @@ public class CountDownTimeManager : MonoBehaviour
         }
     }
 
-    public IEnumerator AnimatePlusSeconds(int plusSeconds)
+    private IEnumerator AnimatePlusSeconds(int plusSeconds)
     {
         var count = seconds;
         for (var i = 0; i < plusSeconds; i++)
@@ -101,34 +107,6 @@ public class CountDownTimeManager : MonoBehaviour
 
     public void UpdateTimeDelayByLevel(int level)
     {
-        // var levelPlayer = PlayerLevelManager.Instance.Level;
-        // if (timeDelay >= 1f)
-        //     timeDelay = 3 - (level - 1) * 0.3f;
-        // else
-        // {
-        //     if (levelPlayer > 7 && levelPlayer <= 21)
-        //     {
-        //         timeDelay = 0.9f;
-        //     }
-        //     else if (levelPlayer > 21 && levelPlayer <= 31)
-        //     {
-        //         timeDelay = 0.8f;
-        //     }
-        //     else if (levelPlayer > 31 && levelPlayer <= 41)
-        //     {
-        //         timeDelay = 0.6f;
-        //     }
-        //     else if (levelPlayer > 41 && levelPlayer <= 51)
-        //     {
-        //         timeDelay = 0.5f;
-        //     }
-        //     else if (levelPlayer > 51 && levelPlayer <= 61)
-        //     {
-        //         timeDelay = 0.4f;
-        //     }
-        //     else
-        //         timeDelay = 0.3f;
-        // }
         timeDelay = 1.5f - (level - 1) * 0.2f;
         if (timeDelay < 0.5f)
         {
@@ -142,6 +120,17 @@ public class CountDownTimeManager : MonoBehaviour
     private void UpdateCountDownTime()
     {
         timeBar.fillAmount = Mathf.Lerp(timeBar.fillAmount, (float)seconds / (float)maxSeconds, 5 * Time.deltaTime);
+    }
 
+    private void UpdateScoreSeconds()
+    {
+        StartCoroutine(this.AnimatePlusSeconds(plusSeconds));
+    }
+
+    void OnDestroy()
+    {
+        ObServerManager.RemoveObServer("UpdateScoreAfterRestart", UpdateSeconds);
+        ObServerManager.RemoveObServer("UpdateUIAfterRestart", UpdateTextSeconds);
+        ObServerManager.RemoveObServer("UpdateExpAndSeconds", UpdateScoreSeconds);
     }
 }

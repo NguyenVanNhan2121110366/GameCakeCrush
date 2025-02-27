@@ -6,19 +6,11 @@ public class Dot : MonoBehaviour
 {
     [SerializeField] private int score;
     [SerializeField] private int exp;
-    [SerializeField] private string nameTag;
     [SerializeField] private int countTime;
     // Start is called before the first frame update
     void Start()
     {
-        nameTag = gameObject.tag;
         this.PlusExpByLevel();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void PlusScoreObj()

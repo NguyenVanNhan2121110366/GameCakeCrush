@@ -11,6 +11,10 @@ public class GameOverManager : MonoBehaviour
     {
         if (instance == null) instance = this; else Destroy(gameObject);
     }
+    void Start()
+    {
+        ObServerManager.AddObServer("OnclickRestart", ResetGame);
+    }
 
     public void ResetGame()
     {
@@ -18,7 +22,7 @@ public class GameOverManager : MonoBehaviour
         || GameStateController.Instance.CurrentGameState == GameState.UI
         || GameStateController.Instance.CurrentGameState == GameState.WinGame)
         {
-            GameStateController.Instance.CurrentGameState = GameState.Swipe;
+            GameStateController.Instance.GameStateSwipe();
             //Save data after restart
             PlayerPrefs.SetInt("CurrentSeconds", 10);
             PlayerPrefs.SetInt("MaxSeconds", 10);
@@ -30,20 +34,15 @@ public class GameOverManager : MonoBehaviour
             PlayerPrefs.Save();
 
             // Update all Score after restart
-            ScoreController.Instance.CurrentScore = PlayerPrefs.GetInt("CurrentScore");
-            ExperienceBarManager.Instance.CurrentExp = PlayerPrefs.GetInt("CurrentExp");
-            ExperienceBarManager.Instance.MaxExp = PlayerPrefs.GetInt("MaxExp");
-            CountDownTimeManager.Instance.Seconds = PlayerPrefs.GetInt("CurrentSeconds");
-            CountDownTimeManager.Instance.MaxSeconds = PlayerPrefs.GetInt("MaxSeconds");
-            CountDownTimeManager.Instance.TimeDelay = PlayerPrefs.GetFloat("TimeDelay");
-            PlayerLevelManager.Instance.Level = PlayerPrefs.GetInt("CurrentLevel");
-            AbilityManager.Instance.CountTimeCoolDown = 15f;
+            ObServerManager.Notifine("UpdateScoreAfterRestart");
 
             // Update UI after restart
-            ExperienceBarManager.Instance.UpdateText();
-            CountDownTimeManager.Instance.UpdateTextSeconds();
-            ScoreController.Instance.UpdateUIScore();
-            Debug.Log("Vao day ne");
+            ObServerManager.Notifine("UpdateUIAfterRestart");
         }
+    }
+
+    void OnDestroy()
+    {
+        ObServerManager.RemoveObServer("OnclickRestart", ResetGame);
     }
 }

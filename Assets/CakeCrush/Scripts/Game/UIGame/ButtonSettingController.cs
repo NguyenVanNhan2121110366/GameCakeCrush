@@ -30,28 +30,21 @@ public class ButtonSettingController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ObServerManager.AddObServer("ClickResume", AnimTurnOffUI);
+        ObServerManager.AddObServer("OnclickRestart", AnimTurnOffUI);
         fillUIgame.SetActive(false);
         uISetting.gameObject.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
     private void OnClickBntSetting()
     {
         GameStateController.Instance.CurrentGameState = GameState.UI;
         fillUIgame.SetActive(true);
         uISetting.gameObject.SetActive(true);
-        recUISetting.DOAnchorPosY(0, 0.5f).OnComplete(() =>
-        {
-
-        });
+        recUISetting.DOAnchorPosY(0, 0.5f);
         bntSetting.gameObject.SetActive(false);
     }
 
-    public void AnimTurnOffUI()
+    private void AnimTurnOffUI()
     {
         recUISetting.DOAnchorPosY(-550, 0.5f).OnComplete(() =>
             {
@@ -60,8 +53,13 @@ public class ButtonSettingController : MonoBehaviour
                 bntSetting.gameObject.SetActive(true);
                 if (CountDownTimeManager.Instance.Seconds == 0)
                 {
-                    UIGameOverManager.Instance.TurnOnUIStateGame(UIGameOverManager.Instance.RectGameOver, UIGameOverManager.Instance.TxtScoreGameOver,GameState.GameOver);
+                    UIGameOverManager.Instance.TurnOnUIStateGame(UIGameOverManager.Instance.RectGameOver, UIGameOverManager.Instance.TxtScoreGameOver, GameState.GameOver);
                 }
             });
+    }
+    void OnDestroy()
+    {
+        ObServerManager.RemoveObServer("ClickResume", AnimTurnOffUI);
+        ObServerManager.RemoveObServer("OnclickRestart", AnimTurnOffUI);
     }
 }

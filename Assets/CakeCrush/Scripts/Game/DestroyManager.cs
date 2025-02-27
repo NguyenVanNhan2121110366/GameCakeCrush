@@ -39,7 +39,6 @@ public class DestroyManager : MonoBehaviour
         if (GridController.Instance.AllDots[column, row].GetComponent<DotInteraction>().IsMatched)
         {
             var obj = GridController.Instance.AllDots[column, row];
-            //this.Effects(column, row, nameObject);
             ObjectPoolEffects.Instance.HandleDestroyEffects(obj.tag, obj.transform.position);
             GridController.Instance.AllDots[column, row].GetComponent<Dot>().PlusScoreObj();
             obj.GetComponent<DotInteraction>().IsMatched = false;
@@ -61,7 +60,7 @@ public class DestroyManager : MonoBehaviour
                 }
             }
         }
-        AudioManager.Instance.AudioSrc.PlayOneShot(AudioManager.Instance.AudioClips[0]);
+        AudioManager.Instance.SoundDestroy();
 
         StartCoroutine(this.Falling());
 
@@ -99,20 +98,16 @@ public class DestroyManager : MonoBehaviour
             {
                 if (!GridController.Instance.AllDots[i, j])
                 {
-                    //GridController.Instance.HandleSpawnDotObj(i, j, 1);
                     var pos = new Vector2(i, j + 1.5f);
                     var objDot = ObjectPoolCakes.Instance.GetCakes(GridController.Instance.Dots[GridController.Instance.DotToUse()].tag, pos);
-                    //objDot.name = "(" + i + "," + j + ")";
-                    //objDot.SetActive(true);
                     objDot.transform.rotation = Quaternion.identity;
                     objDot.GetComponent<DotInteraction>().Column = i;
                     objDot.GetComponent<DotInteraction>().Row = j;
                     GridController.Instance.AllDots[i, j] = objDot;
-                    //objDot.transform.parent = transform;
                 }
             }
         }
-        AudioManager.Instance.AudioSrc.PlayOneShot(AudioManager.Instance.AudioClips[2]);
+        AudioManager.Instance.SoundSpawnDot();
     }
 
     private bool CheckMatched()

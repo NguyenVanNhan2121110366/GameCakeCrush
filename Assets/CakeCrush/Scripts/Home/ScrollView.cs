@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ScrollView : MonoBehaviour
 {
     private RawImage rawImage;
-    private float posX, posY;
+    private float posY;
 
     void Awake()
     {

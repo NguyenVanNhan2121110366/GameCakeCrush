@@ -6,7 +6,6 @@ using UnityEngine;
 public class DotInteraction : MonoBehaviour
 {
     private int column, row;
-    private Vector2 inputValue;
     private Vector2 mouseUp, mouseDown;
     private int originCol, originRow;
     private int saveCol, saveRow;
@@ -19,7 +18,6 @@ public class DotInteraction : MonoBehaviour
 
     private void Start()
     {
-        //dot = FindFirstObjectByType<Dot>();
         isMatched = false;
     }
 
@@ -32,7 +30,7 @@ public class DotInteraction : MonoBehaviour
     }
 
     #region Find Matched
-    public void Find3Matched()
+    private void Find3Matched()
     {
         if (column - 1 >= 0 && column + 1 < GridController.Instance.Width)
         {
@@ -81,7 +79,7 @@ public class DotInteraction : MonoBehaviour
         var inputString = "";
         if (Vector2.Distance(mouseUp, mouseDown) < 10)
         {
-            GameStateController.Instance.CurrentGameState = GameState.Swipe;
+            GameStateController.Instance.GameStateSwipe();
             return inputString = "Invalid";
         }
 
@@ -201,7 +199,6 @@ public class DotInteraction : MonoBehaviour
         if (GameStateController.Instance.CurrentGameState != GameState.Swipe)
             return;
         mouseUp = PosValue();
-        var posX = mouseUp.x - mouseDown.x;
         this.GetValueInput(this.GetValue());
     }
     #endregion
@@ -212,7 +209,6 @@ public class DotInteraction : MonoBehaviour
         {
             Debug.Log("No target");
         }
-        //targetDot = null;
         else
         {
             yield return null;
@@ -223,7 +219,7 @@ public class DotInteraction : MonoBehaviour
                 targetDot.GetComponent<DotInteraction>().Row = row;
                 column = saveCol;
                 row = saveRow;
-                GameStateController.Instance.CurrentGameState = GameState.Swipe;
+                GameStateController.Instance.GameStateSwipe();
                 Debug.Log("No chay vao day");
             }
             else

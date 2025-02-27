@@ -27,15 +27,21 @@ public class ScoreController : MonoBehaviour
     }
     private void Start()
     {
-        currentScore = PlayerPrefs.GetInt("CurrentScore", 0);
+        ObServerManager.AddObServer("UpdateScoreAfterRestart", GetValueCurrentScore);
+        ObServerManager.AddObServer("UpdateUIAfterRestart", UpdateUIScore);
+        this.GetValueCurrentScore();
         this.UpdateUIScore();
+    }
+
+    private void GetValueCurrentScore()
+    {
+        currentScore = PlayerPrefs.GetInt("CurrentScore", 0);
     }
 
     public void UpdateScore()
     {
         StartCoroutine(this.AnimateScore(plusScore));
-        StartCoroutine(ExperienceBarManager.Instance.AnimateExperience(ExperienceBarManager.Instance.PlusExp));
-        StartCoroutine(CountDownTimeManager.Instance.AnimatePlusSeconds(CountDownTimeManager.Instance.PlusSeconds));
+        ObServerManager.Notifine("UpdateExpAndSeconds");
         this.ResetScore();
     }
 
@@ -52,15 +58,21 @@ public class ScoreController : MonoBehaviour
         PlayerPrefs.SetInt("CurrentScore", currentScore);
     }
 
-    public void UpdateUIScore()
+    private void UpdateUIScore()
     {
         txtScore.text = currentScore.ToString();
     }
 
-    public void ResetScore()
+    private void ResetScore()
     {
         plusScore = 0;
         ExperienceBarManager.Instance.PlusExp = 0;
         CountDownTimeManager.Instance.PlusSeconds = 0;
+    }
+
+    void OnDestroy()
+    {
+        ObServerManager.RemoveObServer("UpdateScoreAfterRestart", GetValueCurrentScore);
+        ObServerManager.RemoveObServer("UpdateUIAfterRestart", UpdateUIScore);
     }
 }

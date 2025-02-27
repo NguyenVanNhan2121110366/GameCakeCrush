@@ -65,13 +65,6 @@ public class ObjectPoolCakes : MonoBehaviour
         else
             return null;
     }
-
-    public void HandleCakes(string nameTag, Vector2 pos)
-    {
-        var obj = GetCakes(nameTag, pos);
-        //StartCoroutine(ReturnCakes(obj, nameTag));
-    }
-
     public void ReturnCakes(GameObject obj, string nameTag)
     {
         obj.SetActive(false);

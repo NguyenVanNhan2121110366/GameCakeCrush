@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
-using UnityEngine.TextCore.Text;
 
 public class GridController : MonoBehaviour
 {
@@ -85,11 +82,11 @@ public class GridController : MonoBehaviour
             }
         }
         this.RandomDot();
-        GameStateController.Instance.CurrentGameState = GameState.Swipe;
+        GameStateController.Instance.GameStateSwipe();
         StartCoroutine(CountDownTimeManager.Instance.MinusSecond());
     }
 
-    public void HandleSpawnDotObj(int i, int j, int k)
+    private void HandleSpawnDotObj(int i, int j, int k)
     {
         for (; ; )
         {
@@ -102,9 +99,6 @@ public class GridController : MonoBehaviour
             var pos = new Vector2(i, j + k);
             var objDot = ObjectPoolCakes.Instance.GetCakes(originDot, pos);
             objDot.transform.rotation = Quaternion.identity;
-            //objDot.SetActive(true);
-            //objDot.transform.SetParent(transform);
-            //objDot.name = "(" + i + "," + j + ")";
             allDots[i, j] = objDot;
             objDot.GetComponent<DotInteraction>().Column = i;
             objDot.GetComponent<DotInteraction>().Row = j;

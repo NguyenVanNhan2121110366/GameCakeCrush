@@ -23,12 +23,6 @@ public class ObjectPoolEffects : MonoBehaviour
         this.SpawnPoolEffects();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void AddEffectIntoArray()
     {
         for (var i = 0; i < parentEffects.childCount; i++)

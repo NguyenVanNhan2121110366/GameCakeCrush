@@ -14,7 +14,7 @@ public class AbilityManager : MonoBehaviour
     private bool isCheckClickAbility;
     public bool IsCheckClickAbility { get => isCheckClickAbility; set => isCheckClickAbility = value; }
     public static AbilityManager Instance { get => instance; set => instance = value; }
-    public float CountTimeCoolDown { get => (int)countTimeCoolDown; set => countTimeCoolDown = value; }
+    public float CountTimeCoolDown { get => countTimeCoolDown; set => countTimeCoolDown = value; }
 
     void Awake()
     {
@@ -30,11 +30,19 @@ public class AbilityManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ObServerManager.AddObServer("ClickResume", ObUpdateCountTimeCoolDown);
+        ObServerManager.AddObServer("OnclickRestart", ObUpdateCountTimeCoolDown);
+        ObServerManager.AddObServer("UpdateScoreAfterRestart", GetValueCountTimeCoolDown);
         isCheckClickAbility = false;
         timeCoolDown = 15f;
-        countTimeCoolDown = timeCoolDown;
+        this.GetValueCountTimeCoolDown();
         this.fillAbility.SetActive(false);
         StartCoroutine(this.UpdateCountTimeCoolDown());
+    }
+
+    private void GetValueCountTimeCoolDown()
+    {
+        countTimeCoolDown = timeCoolDown;
     }
 
     // Update is called once per frame
@@ -88,6 +96,11 @@ public class AbilityManager : MonoBehaviour
         fillAbilityBomb.fillAmount = Mathf.Lerp(fillAbilityBomb.fillAmount, countTimeCoolDown / timeCoolDown, 10 * Time.deltaTime);
     }
 
+    private void ObUpdateCountTimeCoolDown()
+    {
+        StartCoroutine(UpdateCountTimeCoolDown());
+    }
+
 
     public IEnumerator UpdateCountTimeCoolDown()
     {
@@ -110,5 +123,11 @@ public class AbilityManager : MonoBehaviour
                 isCheck = false;
 
         }
+    }
+    void OnDestroy()
+    {
+        ObServerManager.RemoveObServer("ClickResume", ObUpdateCountTimeCoolDown);
+        ObServerManager.RemoveObServer("OnclickRestart", ObUpdateCountTimeCoolDown);
+        ObServerManager.RemoveObServer("UpdateScoreAfterRestart", GetValueCountTimeCoolDown);
     }
 }

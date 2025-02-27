@@ -39,10 +39,11 @@ public class ExperienceBarManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ObServerManager.AddObServer("UpdateScoreAfterRestart", GetValue);
+        ObServerManager.AddObServer("UpdateUIAfterRestart", UpdateText);
+        ObServerManager.AddObServer("UpdateExpAndSeconds", UpdateScoreExperience);
         if (animTxtLevel == null) animTxtLevel = PlayerLevelManager.Instance.TxtLevel.GetComponent<Animator>();
-        //maxExp = CheckMaxLevelExp(PlayerLevelManager.Instance.Level);
-        currentExp = PlayerPrefs.GetInt("CurrentExp", 0);
-        maxExp = PlayerPrefs.GetInt("MaxLevel", CheckMaxLevelExp(PlayerLevelManager.Instance.Level));
+        this.GetValue();
         this.UpdateText();
         this.fillLevel.SetActive(false);
     }
@@ -53,12 +54,18 @@ public class ExperienceBarManager : MonoBehaviour
         this.UpdateExpBar();
     }
 
+    private void GetValue()
+    {
+        currentExp = PlayerPrefs.GetInt("CurrentExp", 0);
+        maxExp = PlayerPrefs.GetInt("MaxExp", CheckMaxLevelExp(PlayerLevelManager.Instance.Level));
+    }
+
     private void UpdateExpBar()
     {
         experienceBar.fillAmount = Mathf.Lerp(experienceBar.fillAmount, (float)currentExp / (float)maxExp, 10 * Time.deltaTime);
     }
 
-    public IEnumerator AnimateExperience(int plusExp)
+    private IEnumerator AnimateExperience(int plusExp)
     {
         var count = currentExp;
         for (var i = 0; i < plusExp; i += 5)
@@ -74,24 +81,23 @@ public class ExperienceBarManager : MonoBehaviour
         {
             CountDownTimeManager.Instance.Seconds = 0;
             UIWinGameManager.Instance.TurnOnUIStateGame(UIWinGameManager.Instance.RectWinGame, UIWinGameManager.Instance.TxtScoreGameOver, GameState.WinGame);
-            Debug.Log("Vao day");
         }
     }
-
-    public IEnumerator CheckExperienceUpLevel()
+    private void UpdateScoreExperience()
     {
+        StartCoroutine(AnimateExperience(plusExp));
+    }
 
-        Debug.Log("Hello");
+    private IEnumerator CheckExperienceUpLevel()
+    {
         if (currentExp >= MaxExp)
         {
             var ischeck = true;
             var level = 0;
             fillLevel.SetActive(true);
-            AudioManager.Instance.AudioSrc.PlayOneShot(AudioManager.Instance.AudioClips[1]);
-            Debug.Log("???");
+            AudioManager.Instance.SoundUpLevel();
             while (ischeck)
             {
-
                 var remainingExperience = currentExp - MaxExp;
                 level = ++PlayerLevelManager.Instance.Level;
                 Debug.Log(level);
@@ -101,19 +107,14 @@ public class ExperienceBarManager : MonoBehaviour
                 animTxtLevel.SetTrigger("UpLevel");
                 animExperienceBar.SetTrigger("UpLevel");
                 animframeBar.SetTrigger("FrameUpLevel");
-
                 CountDownTimeManager.Instance.UpdateTimeDelayByLevel(level);
-
                 yield return new WaitForSeconds(0.5f);
                 if (currentExp < maxExp)
                 {
                     Debug.Log("Co vao day khong ");
                     ischeck = false;
                 }
-
             }
-
-
             PlayerPrefs.SetInt("CurrentLevel", PlayerLevelManager.Instance.Level);
             PlayerPrefs.SetInt("CurrentExp", currentExp);
             PlayerPrefs.SetInt("MaxExp", maxExp);
@@ -128,9 +129,15 @@ public class ExperienceBarManager : MonoBehaviour
         return 50 * level;
     }
 
-    public void UpdateText()
+    private void UpdateText()
     {
         txtExp.text = currentExp + " / " + maxExp;
         PlayerLevelManager.Instance.TxtLevel.text = "Level " + PlayerLevelManager.Instance.Level;
+    }
+    void OnDestroy()
+    {
+        ObServerManager.RemoveObServer("UpdateUIAfterRestart", UpdateText);
+        ObServerManager.RemoveObServer("UpdateScoreAfterRestart", GetValue);
+        ObServerManager.RemoveObServer("UpdateExpAndSeconds", UpdateScoreExperience);
     }
 }
