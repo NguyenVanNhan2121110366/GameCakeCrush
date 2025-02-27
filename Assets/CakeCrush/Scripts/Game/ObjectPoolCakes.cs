@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class ObjectPoolCakes : MonoBehaviour
 {
-    private static ObjectPoolCakes instance;
     [SerializeField] private GameObject[] allCakes = new GameObject[5];
     private Dictionary<string, Queue<GameObject>> cakes = new();
     private Transform parentCakes;
-    public static ObjectPoolCakes Instance { get => instance; set => instance = value; }
+    public static ObjectPoolCakes Instance;
 
     void Awake()
     {
         if (parentCakes == null) parentCakes = GameObject.Find("Dots").transform;
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
 
     }
     // Start is called before the first frame update

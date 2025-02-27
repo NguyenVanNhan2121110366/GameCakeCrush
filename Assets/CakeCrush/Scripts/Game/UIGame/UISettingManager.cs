@@ -4,16 +4,15 @@ using UnityEngine.UI;
 
 public class UISettingManager : ButtonUIManager
 {
-    private static UISettingManager instance;
     private Slider sliderMusic;
     private Slider sliderSound;
     private Button bntResume;
-    public static UISettingManager Instance { get => instance; set => instance = value; }
+    public static UISettingManager Instance;
     public Slider SliderMusic { get => sliderMusic; set => sliderMusic = value; }
     public Slider SliderSound { get => sliderSound; set => sliderSound = value; }
     private void Awake()
     {
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
         if (bntResume == null) bntResume = GameObject.Find("Resume").GetComponent<Button>();
         else Debug.Log("bntResume was exist");
         if (bntHome == null) bntHome = GameObject.Find("HomeSetting").GetComponent<Button>();

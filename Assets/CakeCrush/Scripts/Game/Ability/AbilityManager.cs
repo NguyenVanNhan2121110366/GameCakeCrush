@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class AbilityManager : MonoBehaviour
 {
-    private static AbilityManager instance;
-
     private Button bntAbilityBomb;
     private GameObject fillAbility;
     private Image fillAbilityBomb;
@@ -13,12 +11,12 @@ public class AbilityManager : MonoBehaviour
     private float countTimeCoolDown;
     private bool isCheckClickAbility;
     public bool IsCheckClickAbility { get => isCheckClickAbility; set => isCheckClickAbility = value; }
-    public static AbilityManager Instance { get => instance; set => instance = value; }
+    public static AbilityManager Instance;
     public float CountTimeCoolDown { get => countTimeCoolDown; set => countTimeCoolDown = value; }
 
     void Awake()
     {
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
         if (fillAbility == null) fillAbility = GameObject.Find("FillAbility");
         else Debug.Log("fillAbility was exist");
         if (bntAbilityBomb == null) bntAbilityBomb = GameObject.Find("bntAbilityBom").GetComponent<Button>();

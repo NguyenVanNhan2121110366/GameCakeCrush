@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class ExperienceBarManager : MonoBehaviour
 {
-    private static ExperienceBarManager instance;
     [SerializeField] private int plusExp;
     [SerializeField] private int currentExp;
     private TextMeshProUGUI txtExp;
@@ -17,14 +16,14 @@ public class ExperienceBarManager : MonoBehaviour
     private Animator animExperienceBar;
     private Animator animframeBar;
     private GameObject fillLevel;
-    public static ExperienceBarManager Instance { get => instance; set => instance = value; }
+    public static ExperienceBarManager Instance;
     public int MaxExp { get => maxExp; set => maxExp = value; }
     public int PlusExp { get => plusExp; set => plusExp = value; }
     public int CurrentExp { get => currentExp; set => currentExp = value; }
     public GameObject FillLevel { get => fillLevel; set => fillLevel = value; }
     private void Awake()
     {
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
         if (txtExp == null) txtExp = GameObject.Find("txtCurrentExp").GetComponent<TextMeshProUGUI>();
         else Debug.Log("txtExp was exist");
         if (experienceBar == null) experienceBar = GameObject.Find("experienceBar").GetComponent<Image>();

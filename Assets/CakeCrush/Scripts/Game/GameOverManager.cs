@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class GameOverManager : MonoBehaviour
 {
-    private static GameOverManager instance;
-    public static GameOverManager Instance { get => instance; set => instance = value; }
+    public static GameOverManager Instance;
 
     void Awake()
     {
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
     }
     void Start()
     {

@@ -5,16 +5,15 @@ using UnityEngine;
 
 public class PlayerLevelManager : MonoBehaviour
 {
-    private static PlayerLevelManager instance;
     [SerializeField] private TextMeshProUGUI txtLevel;
     private int level;
-    public static PlayerLevelManager Instance { get => instance; set => instance = value; }
+    public static PlayerLevelManager Instance;
     public int Level { get => level; set => level = value; }
     public TextMeshProUGUI TxtLevel { get => txtLevel; set => txtLevel = value; }
 
     private void Awake()
     {
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
         if (txtLevel == null) txtLevel = GameObject.Find("txtLevelPlayer").GetComponent<TextMeshProUGUI>();
         this.GetValueLevel();
     }

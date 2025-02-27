@@ -5,16 +5,15 @@ using TMPro;
 using UnityEngine.UI;
 public class UIWinGameManager : ButtonUIManager
 {
-    private static UIWinGameManager instance;
     private RectTransform rectWinGame;
     private TextMeshProUGUI txtScoreGameOver;
-    public static UIWinGameManager Instance { get => instance; set => instance = value; }
+    public static UIWinGameManager Instance;
     public RectTransform RectWinGame { get => rectWinGame; set => rectWinGame = value; }
     public TextMeshProUGUI TxtScoreGameOver { get => txtScoreGameOver; set => txtScoreGameOver = value; }
 
     void Awake()
     {
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
         if (rectWinGame == null) rectWinGame = GameObject.Find("BgrWinGame").GetComponent<RectTransform>();
         else Debug.Log("rectGameOver was exist");
         if (txtScoreGameOver == null) txtScoreGameOver = GameObject.Find("txtScoreWinGame").GetComponent<TextMeshProUGUI>();

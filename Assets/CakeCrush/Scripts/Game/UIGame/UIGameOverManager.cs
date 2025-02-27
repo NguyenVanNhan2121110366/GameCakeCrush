@@ -7,16 +7,15 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class UIGameOverManager : ButtonUIManager
 {
-    private static UIGameOverManager instance;
     private RectTransform rectGameOver;
     private TextMeshProUGUI txtScoreGameOver;
-    public static UIGameOverManager Instance { get => instance; set => instance = value; }
+    public static UIGameOverManager Instance;
     public RectTransform RectGameOver { get => rectGameOver; set => rectGameOver = value; }
     public TextMeshProUGUI TxtScoreGameOver { get => txtScoreGameOver; set => txtScoreGameOver = value; }
 
     void Awake()
     {
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
         if (rectGameOver == null) rectGameOver = GameObject.Find("BgrLoseGame").GetComponent<RectTransform>();
         else Debug.Log("rectGameOver was exist");
         if (txtScoreGameOver == null) txtScoreGameOver = GameObject.Find("txtScoreGameOver").GetComponent<TextMeshProUGUI>();

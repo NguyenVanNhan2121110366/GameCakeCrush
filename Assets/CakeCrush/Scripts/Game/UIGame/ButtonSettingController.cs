@@ -6,18 +6,17 @@ using DG.Tweening;
 using Unity.VisualScripting;
 public class ButtonSettingController : MonoBehaviour
 {
-    private static ButtonSettingController instance;
     private Button bntSetting;
     private Image uISetting;
     private RectTransform recUISetting;
     private GameObject fillUIgame;
-    public static ButtonSettingController Instance { get => instance; set => instance = value; }
+    public static ButtonSettingController Instance;
     public GameObject FillUIGame { get => fillUIgame; set => fillUIgame = value; }
     public Button BntSetting { get => bntSetting; set => bntSetting = value; }
 
     void Awake()
     {
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
         if (bntSetting == null) bntSetting = GameObject.Find("bntSetting").GetComponent<Button>();
         else Debug.Log("bntSetting was exist");
         if (uISetting == null) uISetting = GameObject.Find("BgrSetting").GetComponent<Image>();

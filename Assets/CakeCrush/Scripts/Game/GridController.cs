@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class GridController : MonoBehaviour
 {
-    private static GridController instance;
     [SerializeField] private int width, height;
     [SerializeField] private GameObject gridObj;
     [SerializeField] private Transform dotParent;
@@ -16,12 +15,12 @@ public class GridController : MonoBehaviour
     public GameObject[,] AllDots { get => allDots; set => allDots = value; }
     public int Width { get => width; set => width = value; }
     public int Height { get => height; set => height = value; }
-    public static GridController Instance { get => instance; set => instance = value; }
+    public static GridController Instance;
     public GameObject[] Dots { get => dots; set => dots = value; }
 
     private void Awake()
     {
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
         if (dotParent == null) dotParent = GameObject.Find("Dots").transform; else return;
     }
 

@@ -5,22 +5,20 @@ using UnityEngine.UI;
 
 public class CountDownTimeManager : MonoBehaviour
 {
-    private static CountDownTimeManager instance;
-
     private TextMeshProUGUI txtSeconds;
     private int plusSeconds;
     private Image timeBar;
     public int seconds;
     public int maxSeconds;
     private float timeDelay;
-    public static CountDownTimeManager Instance { get => instance; set => instance = value; }
+    public static CountDownTimeManager Instance;
     public int PlusSeconds { get => plusSeconds; set => plusSeconds = value; }
     public int MaxSeconds { get => maxSeconds; set => maxSeconds = value; }
     public float TimeDelay { get => timeDelay; set => timeDelay = value; }
     public int Seconds { get => seconds; set => seconds = value; }
     private void Awake()
     {
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
         if (txtSeconds == null) txtSeconds = GameObject.Find("txtSeconds").GetComponent<TextMeshProUGUI>();
         if (timeBar == null) timeBar = GameObject.Find("timeBar").GetComponent<Image>();
 

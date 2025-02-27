@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class GameStateController : MonoBehaviour
 {
-    private static GameStateController instance;
     [SerializeField] private GameState currentGameState;
     public GameState CurrentGameState { get => currentGameState; set => currentGameState = value; }
-    public static GameStateController Instance { get => instance; set => instance = value; }
+    public static GameStateController Instance;
 
     private void Awake()
     {
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
 
     }
     // Start is called before the first frame update

@@ -6,24 +6,17 @@ public class DestroyManager : MonoBehaviour
 {
     private GameObject[] effects = new GameObject[5];
     private Transform parentEffects;
-    private static DestroyManager instance;
-    public static DestroyManager Instance { get => instance; set => instance = value; }
+    public static DestroyManager Instance;
 
     void Awake()
     {
         if (parentEffects == null) parentEffects = GameObject.Find("Effects").transform;
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
     }
     // Start is called before the first frame update
     void Start()
     {
         this.GetChildEffects();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     private void GetChildEffects()

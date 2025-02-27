@@ -5,14 +5,13 @@ using UnityEngine;
 
 public class ScoreController : MonoBehaviour
 {
-    private static ScoreController instance;
     [SerializeField] private int currentScore;
 
     [SerializeField] private int plusScore;
 
 
     private TextMeshProUGUI txtScore;
-    public static ScoreController Instance { get => instance; set => instance = value; }
+    public static ScoreController Instance;
     public int PlusScore { get => plusScore; set => plusScore = value; }
     public TextMeshProUGUI TxtScore { get => txtScore; set => txtScore = value; }
     public int CurrentScore { get => currentScore; set => currentScore = value; }
@@ -21,7 +20,7 @@ public class ScoreController : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
 
         if (txtScore == null) txtScore = GameObject.Find("txtScore").GetComponent<TextMeshProUGUI>(); else Debug.Log("txtScore was exist");
     }

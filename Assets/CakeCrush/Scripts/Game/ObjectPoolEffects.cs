@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class ObjectPoolEffects : MonoBehaviour
 {
-    private static ObjectPoolEffects instance;
     [SerializeField] private GameObject[] allEffects = new GameObject[5];
     private Dictionary<string, Queue<GameObject>> effects = new();
     private Transform parentEffects;
-    public static ObjectPoolEffects Instance { get => instance; set => instance = value; }
+    public static ObjectPoolEffects Instance;
     public Dictionary<string, Queue<GameObject>> Effects { get => effects; set => effects = value; }
 
     void Awake()
     {
-        if (instance == null) instance = this; else Destroy(gameObject);
+        if (Instance == null) Instance = this; else Destroy(gameObject);
         if (parentEffects == null) parentEffects = GameObject.Find("Effects").transform;
     }
     // Start is called before the first frame update
