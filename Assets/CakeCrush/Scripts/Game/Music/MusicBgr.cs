@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MusicBgr : MonoBehaviour
 {
-    private AudioSource bgrMusic;
+    [SerializeField] private AudioSource bgrMusic;
     public AudioSource BgrMusic { get => bgrMusic; set => bgrMusic = value; }
     public static MusicBgr Instance;
     private void Awake()

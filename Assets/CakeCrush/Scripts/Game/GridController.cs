@@ -33,15 +33,6 @@ public class GridController : MonoBehaviour
         StartCoroutine(this.CreateGrid());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-    }
-
     private void BrowserDots()
     {
         for (var i = 0; i < dotParent.childCount; i++)
